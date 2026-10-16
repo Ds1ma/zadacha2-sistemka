@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader("1111.txt"));
+        List<Integer> nums = new ArrayList<>();
+        String line;
+        while ((line = br.readLine()) != null) {
+            line = line.trim();
+            if (!line.isEmpty()) {
+                nums.add(Integer.parseInt(line));
+            }
+        }
+        br.close();
+        int minMultiple37 = Integer.MAX_VALUE;
+        int maxMultiple73 = Integer.MIN_VALUE;
+        for (int x : nums) {
+            if (x % 37 == 0 && x < minMultiple37) {
+                minMultiple37 = x;
+            }
+            if (x % 73 == 0 && x > maxMultiple73) {
+                maxMultiple73 = x;
+            }
+        }
+        int left = Math.min(minMultiple37, maxMultiple73);
+        int right = Math.max(minMultiple37, maxMultiple73);
+        int count = 0;
+        int minSum = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.size() - 1; i++) {
+            int a = nums.get(i);
+            int b = nums.get(i + 1);
+            int between = 0;
+            if (a > left && a < right) between++;
+            if (b > left && b < right) between++;
+            if (between == 1) {
+                count++;
+                int sum = a + b;
+                if (sum < minSum) {
+                    minSum = sum;
+                }
+            }
+        }
+        System.out.println("Количество пар: " + count);
+        System.out.println("Минимальная сумма: " + minSum);
+    }
+}
